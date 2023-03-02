@@ -98,4 +98,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteTask(int id){
         db.delete(TODO_TABLE, ID + "=?", new String[] {String.valueOf(id)});
     }
+
+    @SuppressLint("Range")
+    public List<ListItem> searchTasks(String query) {
+        List<ListItem> taskList = new ArrayList<>();
+        Cursor cur = null;
+        db.beginTransaction();
+        try {
+            cur = db.query(TODO_TABLE, null, TASK + " LIKE ?", new String[]{"%" + query + "%"}, null, null, null);
+            if (cur != null) {
+                if (cur.moveToFirst()) {
+                    do {
+                        ListItem task = new ListItem();
+                        task.setId(cur.getInt(cur.getColumnIndex(ID)));
+                        task.setTodo(cur.getString(cur.getColumnIndex(TASK)));
+                        task.setStatus(cur.getInt(cur.getColumnIndex(STATUS)));
+                        taskList.add(task);
+                    } while (cur.moveToNext());
+                }
+            }
+        } finally {
+            db.endTransaction();
+            if (cur != null) {
+                cur.close();
+            }
+        }
+        return taskList;
+    }
 }
