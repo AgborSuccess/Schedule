@@ -147,6 +147,23 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
         }).attachToRecyclerView(mRecyclerView);
 
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mTodoList.clear();
+                mTodoList.addAll(dbHandler.searchTasks(newText));
+                mAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+
+
+
     }
 
 //    private void createExampleList() {
