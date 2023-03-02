@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="custom_card_view_style" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/bottom_card_view</item>
+    </style>
+
+    <style name="bottom_card_view">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">38dp</item>
+        <item name="cornerSizeTopLeft">38dp</item>
+    </style>
+
+    <style name="DialogStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@color/myAccentVariant</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+</resources>
