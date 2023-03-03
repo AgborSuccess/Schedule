@@ -2,6 +2,7 @@ package com.example.schedule.Adapters;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 // Update the text view with the strike-through effect based on the updated status
                 if (!currentStatus) {
                     holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                    // Play sound
+                    MediaPlayer mediaPlayer = MediaPlayer.create(activity, R.raw.task_completed);
+                    mediaPlayer.start();
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            mediaPlayer.release();
+                        }
+                    });
                 } else {
                     holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
@@ -88,6 +99,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 if (b) {
                     db.updateStatus(todo.getId(), 1);
                     holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+
+                    // Play sound
+                    MediaPlayer mediaPlayer = MediaPlayer.create(activity, R.raw.task_completed);
+                    mediaPlayer.start();
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            mediaPlayer.release();
+                        }
+                    });
                 } else {
                     db.updateStatus(todo.getId(), 0);
                     holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
