@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
             public boolean onQueryTextChange(String newText) {
                 mTodoList.clear();
                 mTodoList.addAll(dbHandler.searchTasks(newText));
+                Collections.reverse(mTodoList);
                 mAdapter.notifyDataSetChanged();
                 return true;
             }
@@ -163,30 +164,6 @@ public class MainActivity extends AppCompatActivity implements DialogCloseListen
 
     }
 
-//    private void createExampleList() {
-//        mTodoList = new ArrayList<>();
-//        mTodoList.add(new ListItem("Task 1", false));
-//        mTodoList.add(new ListItem("Task 2", false));
-//        mTodoList.add(new ListItem("Task 3 this is a very very very long task that should be used as a marquies tetx sdsdsdsds", false));
-//        mTodoList.add(new ListItem("Task 1", false));
-//        mTodoList.add(new ListItem("Task 2", false));
-//        mTodoList.add(new ListItem("Task 3 this is a very very very long task that should be used as a marquies tetx sdsdsdsds", false));
-//        mTodoList.add(new ListItem("Task 1", false));
-//        mTodoList.add(new ListItem("Task 2", false));
-//        mTodoList.add(new ListItem("Task 3 this is a very very very long task that should be used as a marquies tetx sdsdsdsds", false));
-//        mTodoList.add(new ListItem("Task 1", false));
-//        mTodoList.add(new ListItem("Task 2", false));
-//        mTodoList.add(new ListItem("Task 3 this is a very very very long task that should be used as a marquies tetx sdsdsdsds", false));
-//        mTodoList.add(new ListItem("Task 1", false));
-//        mTodoList.add(new ListItem("Task 2", false));
-//        mTodoList.add(new ListItem("Task 3 this is a very very very long task that should be used as a marquies tetx sdsdsdsds", false));
-//        mTodoList.add(new ListItem("Task 1", false));
-//        mTodoList.add(new ListItem("Task 2", false));
-//        mTodoList.add(new ListItem("Task 3 this is a very very very long task that should be used as a marquies tetx sdsdsdsds", false));
-//        mTodoList.add(new ListItem("Task 1", false));
-//        mTodoList.add(new ListItem("Task 2", false));
-//        mTodoList.add(new ListItem("Task 3 this is a very very very long task that should be used as a marquies tetx sdsdsdsds", false));
-//    }
 
     private void buildRecyclerView() {
         mRecyclerView = findViewById(R.id.recycler_view);

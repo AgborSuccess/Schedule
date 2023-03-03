@@ -1,7 +1,6 @@
 package com.example.schedule.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +22,9 @@ import com.example.schedule.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import nl.dionsegijn.konfetti.xml.KonfettiView;
+
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
@@ -51,26 +53,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         ListItem todo = todoList.get(position);
 
         holder.textViewTodo.setText(todo.getTodo());
-//        holder.ButtonChecked.setChecked(todo.isChecked());
-//
-//        if (todo.isChecked()){
-//            holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//        }else{
-//            holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-//        }
-////
-//        holder.ButtonChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                todo.setChecked(isChecked);
-//                if (isChecked){
-//                    holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//                }else{
-//                    holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-//                }
-//            }
-//        });
-//
         holder.ButtonChecked.setChecked(toBoolean(todo.getStatus()));
 
         if (todo.getStatus() == 1) {
@@ -78,6 +60,27 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         } else {
             holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
+
+        holder.listContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Get the current status of the checkbox
+                boolean currentStatus = holder.ButtonChecked.isChecked();
+
+                // Update the status of the checkbox
+                holder.ButtonChecked.setChecked(!currentStatus);
+
+                // Update the text view with the strike-through effect based on the updated status
+                if (!currentStatus) {
+                    holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    holder.textViewTodo.setPaintFlags(holder.textViewTodo.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                }
+
+                // Update the database with the updated status
+                db.updateStatus(todo.getId(), currentStatus ? 0 : 1);
+            }
+        });
 
         holder.ButtonChecked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -155,10 +158,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         TextView textViewTodo;
         CheckBox ButtonChecked;
         CardView listContainer;
+        KonfettiView konfettiView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            konfettiView = activity.findViewById(R.id.konfettiView);
             textViewTodo = itemView.findViewById(R.id.todo);
             ButtonChecked = itemView.findViewById(R.id.checked_btn);
             listContainer = itemView.findViewById(R.id.list_container);
